@@ -1,0 +1,97 @@
+//Controlador de un api rest sin entityframework
+
+using ASP_EntityframeWork.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ASP_.NET_CORE.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PersonaController : ControllerBase
+    {
+
+        private readonly AppDbContext context;
+
+        public PersonaController(AppDbContext _context)
+        {
+            this.context = _context;
+        }
+
+        // GET: api/Persona
+        [HttpGet]
+        public IEnumerable<Persona> Get()
+        {
+            return context.Persona.ToList();
+        }
+
+        //// GET: api/Persona/5
+        //[HttpGet("{id}", Name = "Get")]
+        //public Persona Get(int id)
+        //{
+        //    var persona = context.Persona.FirstOrDefault(p => p.Id == id);
+        //    return persona;
+        //}
+
+        // GET: api/Persona/CorreoElectronico
+        [HttpGet("{CorreoElectronico}", Name = "GetPerson")]
+        public Persona GetPerson(string CorreoElectronico)
+        {
+            var persona = context.Persona.Where(p => p.CorreoElectronico == CorreoElectronico).Single();
+            return persona;
+        }
+
+        // POST: api/Persona
+        [HttpPost]
+        public ActionResult Post([FromBody] Persona persona)
+        {
+            try
+            {
+                context.Persona.Add(persona);
+                context.SaveChanges();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        // PUT: api/Persona/5
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody] Persona persona)
+        {
+            if (persona.Id == id)
+            {
+                context.Entry(persona).State = EntityState.Modified;
+                context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        // DELETE: api/Persona/5
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            var persona = context.Persona.FirstOrDefault(p => p.Id == id);
+            if (persona != null)
+            {
+                context.Persona.Remove(persona);
+                context.SaveChanges();
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+    }
+}
