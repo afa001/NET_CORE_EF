@@ -45,6 +45,14 @@ namespace ASP_NET_CORE_EF.Controllers
                             break;
                     }
                 }
+                //else
+                //{
+                //    //filter fecha
+                //    if (!String.IsNullOrEmpty(fecha))
+                //    {
+                //       personas = personas.Where(p => p.FechaNacimiento.Equals(DateTime.Now));
+                //    }
+                //}
             }
             return View(personas);
         }
