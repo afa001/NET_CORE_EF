@@ -19,9 +19,34 @@ namespace ASP_NET_CORE_EF.Controllers
         }
 
         // GET: Persona
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index(string nombre)
+        public IActionResult Index (string nombre,string sexo)
         {
-            return View(await _context.Personas.ToListAsync());
+            //filter
+            var personas = from p in _context.Personas select p;
+            //var personas = await _context.Personas.ToListAsync();
+
+            //filter nombre
+            if (!String.IsNullOrEmpty(nombre))
+            {
+                personas = personas.Where(p=>p.Nombres.Contains(nombre));
+            }
+            else{
+                //filter sexo
+                if (!String.IsNullOrEmpty(sexo))
+                {
+                    switch (sexo)
+                    {
+                        case "M":
+                            personas = personas.Where(p => p.Sexo.Equals("M"));
+                            break;
+                        case "F":
+                            personas = personas.Where(p => p.Sexo.Equals("F"));
+                            break;
+                    }
+                }
+            }
+            return View(personas);
         }
 
         // GET: Persona/Details/5

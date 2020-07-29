@@ -23,6 +23,10 @@ namespace ASP_NET_CORE_EF.Model
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Banco>().ToTable("Banco");
             modelBuilder.Entity<Persona>().ToTable("Persona");
+                 
+            //filtro
+            //filtro que se va a aplicar en toda mi aplicacion cuando yo haga un query a Persona
+            modelBuilder.Entity<Persona>().HasQueryFilter(x=> x.Edad>1);
         }
     }
 }
