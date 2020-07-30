@@ -21,10 +21,21 @@ namespace API_REST.Controllers
         }
 
         // GET: api/Producto
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetProducto()
+        //[HttpGet]
+        [HttpGet("{tipo?}")]
+        public async Task<ActionResult<IEnumerable<Producto>>> GetProducto([FromQuery] string tipo)
         {
-            return await _context.Producto.ToListAsync();
+            //filter all
+            var productos = from p in _context.Producto select p;
+
+            //validate filter tipo
+            if (!String.IsNullOrEmpty(tipo))
+            {
+                productos = productos.Where(p => p.Tipo.Contains(tipo));
+            }
+
+            return await productos.ToListAsync();
+            //return await _context.Producto.ToListAsync();
         }
 
         // GET: api/Producto/5

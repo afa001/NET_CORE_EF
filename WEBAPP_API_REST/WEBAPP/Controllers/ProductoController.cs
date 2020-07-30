@@ -17,15 +17,24 @@ namespace WEBAPP.Controllers
         Service s = new Service();
 
         // GET: ProductoController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string tipo)
         {
             List<Producto> productos = new List<Producto>();
             HttpClient client = s.Initial();
-            HttpResponseMessage res = await client.GetAsync("api/Producto");
+            HttpResponseMessage response;
+            response = await client.GetAsync("api/Producto");
 
-            if (res.IsSuccessStatusCode)
+            //validate parameter tipo
+            if (!String.IsNullOrEmpty(tipo))
             {
-                var results = res.Content.ReadAsStringAsync().Result;
+                //response = await client.GetAsync("api/Producto/?tipo="+tipo.ToString());
+                response = await client.GetAsync("api/Producto/?tipo="+tipo.ToString());
+            }
+
+            //validate api response
+            if (response.IsSuccessStatusCode)
+            {
+                var results = response.Content.ReadAsStringAsync().Result;
                 productos = JsonConvert.DeserializeObject<List<Producto>>(results);
             }
 
