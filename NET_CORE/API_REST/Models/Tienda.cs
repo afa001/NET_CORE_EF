@@ -12,5 +12,7 @@ namespace API_REST.Models
         public string Direccion { get; set; }
         public string Pais { get; set; }
         public string Ciudad { get; set; }
+
+        public string Producto { get; set; }
     }
 }
